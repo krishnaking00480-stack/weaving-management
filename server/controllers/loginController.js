@@ -1,15 +1,10 @@
 const login = (req, res) => {
-  const { username, password } = req.body;
-
-  console.log("Entered Username:", username);
-  console.log("Entered Password:", password);
-
-  console.log("ENV Username:", process.env.ADMIN_USERNAME);
-  console.log("ENV Password:", process.env.ADMIN_PASSWORD);
+  const username = req.body.username.trim();
+  const password = req.body.password.trim();
 
   if (
-    username === process.env.ADMIN_USERNAME &&
-    password === process.env.ADMIN_PASSWORD
+    username === process.env.ADMIN_USERNAME.trim() &&
+    password === process.env.ADMIN_PASSWORD.trim()
   ) {
     return res.status(200).json({
       success: true,
