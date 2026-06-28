@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
+import api from "../services/api";
 
 function Login() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/login", {
+      const res = await api.post("/login", {
         username,
         password,
       });
@@ -26,7 +26,13 @@ function Login() {
         }, 1000);
       }
     } catch (error) {
-      toast.error("Invalid Username or Password");
+      console.error(error);
+
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Unable to connect to server");
+      }
     }
   };
 
@@ -54,6 +60,7 @@ function Login() {
             className="w-full border rounded-lg p-3 mt-2 mb-5"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
 
           <label className="font-semibold">
@@ -66,6 +73,7 @@ function Login() {
             className="w-full border rounded-lg p-3 mt-2 mb-6"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
 
           <button
