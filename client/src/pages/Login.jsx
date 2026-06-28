@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function Login() {
   const navigate = useNavigate();
@@ -18,11 +19,14 @@ function Login() {
       });
 
       if (res.data.success) {
-        alert("Login Successful");
-        navigate("/dashboard");
+        toast.success("Login Successful");
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
       }
     } catch (error) {
-      alert("Invalid Username or Password");
+      toast.error("Invalid Username or Password");
     }
   };
 
@@ -65,6 +69,7 @@ function Login() {
           />
 
           <button
+            type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold"
           >
             Login

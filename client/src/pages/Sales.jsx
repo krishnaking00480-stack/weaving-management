@@ -2,28 +2,28 @@ import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 
-import SearchProduction from "../components/production/SearchProduction";
-import ProductionTable from "../components/production/ProductionTable";
-import ProductionForm from "../components/production/ProductionForm";
+import SearchSales from "../components/sales/SearchSales";
+import SalesTable from "../components/sales/SalesTable";
+import SalesForm from "../components/sales/SalesForm";
 
 import api from "../services/api";
 
-function Production() {
+function Sales() {
 
   const [showForm, setShowForm] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [selectedProduction, setSelectedProduction] = useState(null);
+  const [selectedSale, setSelectedSale] = useState(null);
   const [search, setSearch] = useState("");
 
   // ==========================
   // Save
   // ==========================
-  const handleProductionSaved = () => {
+  const handleSalesSaved = () => {
     setShowForm(false);
-    setSelectedProduction(null);
+    setSelectedSale(null);
     setRefresh((prev) => !prev);
 
-    alert("Production Saved Successfully");
+    alert("Sales Saved Successfully");
   };
 
   // ==========================
@@ -31,14 +31,14 @@ function Production() {
   // ==========================
   const handleDelete = async (id) => {
 
-    if (!window.confirm("Delete this production?"))
+    if (!window.confirm("Delete this sales record?"))
       return;
 
     try {
 
-      await api.delete(`/productions/${id}`);
+      await api.delete(`/sales/${id}`);
 
-      alert("Production Deleted Successfully");
+      alert("Sales Record Deleted");
 
       setRefresh((prev) => !prev);
 
@@ -46,7 +46,7 @@ function Production() {
 
       console.error(error);
 
-      alert("Failed to Delete Production");
+      alert("Failed to Delete Sales Record");
 
     }
 
@@ -69,39 +69,39 @@ function Production() {
             <div>
 
               <h1 className="text-3xl font-bold text-blue-700">
-                Production Management
+                Sales Management
               </h1>
 
-              <p className="text-gray-500">
-                Manage saree production.
+              <p className="text-gray-500 mt-1">
+                Receive sarees from weavers and manage labour payment.
               </p>
 
             </div>
 
             <button
               onClick={() => {
-                setSelectedProduction(null);
+                setSelectedSale(null);
                 setShowForm(true);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg shadow"
             >
-              + New Production
+              + New Sales Entry
             </button>
 
           </div>
 
-          <SearchProduction
+          <SearchSales
             search={search}
             setSearch={setSearch}
           />
 
           <div className="mt-6">
 
-            <ProductionTable
+            <SalesTable
               refresh={refresh}
               search={search}
-              onEdit={(production) => {
-                setSelectedProduction(production);
+              onEdit={(sale) => {
+                setSelectedSale(sale);
                 setShowForm(true);
               }}
               onDelete={handleDelete}
@@ -115,13 +115,13 @@ function Production() {
 
       {showForm && (
 
-        <ProductionForm
-          production={selectedProduction}
+        <SalesForm
+          sales={selectedSale}
           onClose={() => {
             setShowForm(false);
-            setSelectedProduction(null);
+            setSelectedSale(null);
           }}
-          onSuccess={handleProductionSaved}
+          onSuccess={handleSalesSaved}
         />
 
       )}
@@ -131,4 +131,4 @@ function Production() {
   );
 }
 
-export default Production;
+export default Sales;
